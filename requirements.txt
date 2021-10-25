@@ -1,0 +1,11 @@
+torch
+ray[rllib]~=1.7.1
+ray[default]
+gym~=0.21.0
+PIL
+imageio-ffmpeg
+imageio~=2.9.0
+
+wandb~=0.12.5
+numpy~=1.21.3
+pillow~=8.4.0
