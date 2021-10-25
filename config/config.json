@@ -1,0 +1,48 @@
+{
+  "wandb": {
+    "use_wandb": true,
+    "project": "sensory_exploration",
+    "entity": "daryoou_sh",
+    "name": "ppo",
+    "notes": "",
+    "local": "false"
+  },
+  "train": {
+    "num_gpus": 0,
+    "log_level": "INFO",
+    "framework": "torch",
+    "env": "ModifiedDungeon",
+    "env_config": {
+        "width": 20,
+        "height": 20,
+        "max_rooms": 3,
+        "min_room_xy": 5,
+        "max_room_xy": 10,
+        "observation_size": 11,
+        "max_steps": 2000,
+        "vision_radius": 5,
+        "seed": 42
+    },
+    "model": {
+      "conv_filters": [
+            [16, [3, 3], 2],
+            [32, [3, 3], 2],
+            [32, [3, 3], 1]
+        ],
+        "post_fcnet_hiddens": [32],
+        "post_fcnet_activation": "relu",
+        "vf_share_layers": false
+      },
+    "rollout_fragment_length": 100,
+    "entropy_coeff": 0.1,
+    "lambda": 0.95,
+    "vf_loss_coeff": 1.0
+  },
+  "global": {
+    "n_iterations": 10,
+    "checkpoint_directory_path": "tmp/ppo/dungeon",
+    "log_each_n_iter": 5,
+    "n_actions_to_save_image": 500,
+    "gif_name": "/Users/diat.lov/GitHub/rl-sensory-exploration/gifs/out.gif"
+  }
+}
