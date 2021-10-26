@@ -20,7 +20,6 @@ Where:
 ```
 - eplored: int # number of new cells explored on the current step
 - step: int # the step number 
-
 ```
 
 The idea behind the reward function is a simple time-discounting of new cells, so in order to maximize the reward, the agent should maximize the number of opened cells on early steps. 
