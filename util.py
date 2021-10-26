@@ -1,3 +1,4 @@
+import wandb
 from PIL import Image
 from typing import Tuple
 
@@ -27,3 +28,15 @@ def save_gif(n_actions: int, gif_name: str, agent, env, observation) -> None:
             break
 
     frames[0].save(gif_name, save_all=True, append_images=frames[1:], loop=0, duration=1000 / 60)
+    wandb.log({"video": wandb.Video(gif_name, fps=30, format="gif")})
+
+
+def log_results(result: dict) -> None:
+    wandb.log(
+        {
+            "reward_min": result["episode_reward_min"],
+            "reward_mean": result["episode_reward_mean"],
+            "reward_max": result["episode_reward_max"],
+            "episode_len_mean": result["episode_len_mean"],
+        },
+    )

@@ -1,6 +1,8 @@
 import os
 import sys
 
+import numpy as np
+
 from gym import spaces
 from mapgen import Dungeon
 
@@ -9,9 +11,7 @@ os.environ["PYTHONPATH"] = os.path.abspath("mapgen")
 
 
 class ModifiedDungeon(Dungeon):
-    """
-    Use this class to change the behavior of the original env (e.g. remove the trajectory from observation, like here)
-    """
+
     def __init__(self,
                  width: int = "width",
                  height: int = "height",
@@ -36,13 +36,19 @@ class ModifiedDungeon(Dungeon):
         )
 
         self.seed(seed)
-        # because we remove trajectory and leave only cell types (UNK, FREE, OCCUPIED)
+        # cell types: UNK, FREE, OCCUPIED
         self.observation_space = spaces.Box(0, 1, [observation_size, observation_size, 3])
         self.action_space = spaces.Discrete(3)
 
+    def _reward(self, info: dict) -> int:
+        explored = info["new_explored"]
+        reward = explored * (1 / max(np.log(info["step"]), 1))
+        return reward
+
     def step(self, action):
         observation, reward, done, info = super().step(action)
-        observation = observation[:, :, :-1] # remove trajectory
+        reward = self._reward(info)
+        observation = observation[:, :, :-1]
         return observation, reward, done, info
 
     def reset(self):
